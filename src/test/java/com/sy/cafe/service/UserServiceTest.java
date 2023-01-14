@@ -1,6 +1,5 @@
 package com.sy.cafe.service;
 
-import com.sy.cafe.domain.Menu;
 import com.sy.cafe.domain.User;
 import com.sy.cafe.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -17,10 +16,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     @InjectMocks
-    private UserService userService;
+    UserService userService;
 
     @Mock
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Test
     @DisplayName("회원 추가")

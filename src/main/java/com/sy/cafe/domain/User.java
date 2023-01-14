@@ -17,6 +17,24 @@ public class User extends BaseTimeEntity{
     private Long id;
 
     @Column(nullable = false)
+    private String nickname;
+
+    @Column(nullable = false)
     private Long point;
+
+    public User(String nickname) {
+        this.nickname = nickname;
+        this.point = 0L;
+    }
+
+    public Long chargePoint(Long point){
+        this.point += point;
+        return this.point;
+    }
+
+    public Long usePoint(Long point){
+        this.point -= point;
+        return this.point;
+    }
 
 }

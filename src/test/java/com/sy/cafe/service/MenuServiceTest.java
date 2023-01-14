@@ -24,10 +24,10 @@ import static org.mockito.Mockito.when;
 class MenuServiceTest {
 
     @InjectMocks
-    private MenuService menuService;
+    MenuService menuService;
 
     @Mock
-    private MenuRepository menuRepository;
+    MenuRepository menuRepository;
 
     @Test
     @DisplayName("메뉴 추가")

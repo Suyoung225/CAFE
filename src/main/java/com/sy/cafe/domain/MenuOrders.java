@@ -4,12 +4,11 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Map;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 @Getter
 public class MenuOrders extends CreatedTimeEntity{
 
@@ -34,4 +33,20 @@ public class MenuOrders extends CreatedTimeEntity{
     @NotNull
     private Orders orders;
 
+    @Builder
+    public MenuOrders(Long price, Long number, Menu menu, Orders orders) {
+        this.price = price;
+        this.number = number;
+        this.menu = menu;
+        this.orders = orders;
+    }
+
+    public static MenuOrders createMenuOrders(Menu menu, Long number, Orders order) {
+        return MenuOrders.builder()
+                .price(menu.getPrice())
+                .number(number)
+                .menu(menu)
+                .orders(order)
+                .build();
+    }
 }

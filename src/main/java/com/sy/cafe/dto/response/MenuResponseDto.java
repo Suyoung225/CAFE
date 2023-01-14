@@ -1,7 +1,6 @@
 package com.sy.cafe.dto.response;
 
 import com.sy.cafe.domain.Menu;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

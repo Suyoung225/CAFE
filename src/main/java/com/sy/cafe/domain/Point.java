@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -28,4 +27,11 @@ public class Point extends CreatedTimeEntity{
     @JoinColumn(name = "user_id", nullable = false)
     @NotNull
     private User user;
+
+    @Builder
+    public Point(PointType type, Long point, User user) {
+        this.type = type;
+        this.point = point;
+        this.user = user;
+    }
 }
