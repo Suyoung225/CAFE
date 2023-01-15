@@ -32,5 +32,10 @@ public class MenuController {
     public ResponseDto<MenuResponseDto> updateMenu(@PathVariable Long menuId, @RequestBody MenuRequestDto dto){
         return ResponseDto.success(menuService.updateMenu(menuId, dto.getName(),dto.getPrice()));
     }
+    // 인기 메뉴
+    @GetMapping("/popular")
+    public ResponseDto<List<MenuResponseDto>> popularMenu(){
+        return ResponseDto.success(menuService.popularMenu());
+    }
 
 }

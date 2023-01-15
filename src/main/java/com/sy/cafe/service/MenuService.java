@@ -6,13 +6,19 @@ import com.sy.cafe.exception.ErrorCode;
 import com.sy.cafe.exception.RequestException;
 import com.sy.cafe.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class MenuService {
@@ -38,8 +44,7 @@ public class MenuService {
     @Transactional
     public MenuResponseDto updateMenu(Long menuId, String name, Long price) {
         // 입력 받은 id 존재여부
-        Menu menu = menuRepository.findById(menuId).orElseThrow(
-                () -> new RequestException(ErrorCode.MENU_NOT_FOUND));
+        Menu menu = findMenu(menuId);
 
         // 수정한 메뉴이름이 이미 존재하는 경우
         if(menuRepository.existsByName(name) && !menu.getName().equals(name))
@@ -49,4 +54,26 @@ public class MenuService {
         return new MenuResponseDto(menu);
     }
 
+    @Cacheable(value = "menu", cacheManager = "cacheManager")
+    public List<MenuResponseDto> popularMenu() {
+        log.info("cache miss");
+        List<Long> ids = menuRepository.popularMenus();
+        List<MenuResponseDto> list = new ArrayList<>();
+        for (Long id : ids) {
+            Menu menu = findMenu(id);
+            list.add(new MenuResponseDto(menu));
+        }
+        return list;
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    @CacheEvict(value = "menu", allEntries = true)
+    public void deleteCache() {
+        popularMenu();
+    }
+
+    private Menu findMenu(Long menuId) {
+        return menuRepository.findById(menuId).orElseThrow(
+                () -> new RequestException(ErrorCode.MENU_NOT_FOUND));
+    }
 }
