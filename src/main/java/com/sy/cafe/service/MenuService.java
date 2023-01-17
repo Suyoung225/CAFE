@@ -1,6 +1,8 @@
 package com.sy.cafe.service;
 
 import com.sy.cafe.domain.Menu;
+import com.sy.cafe.dto.OrderDto;
+import com.sy.cafe.dto.OrderItemDto;
 import com.sy.cafe.dto.response.MenuResponseDto;
 import com.sy.cafe.exception.ErrorCode;
 import com.sy.cafe.exception.RequestException;
@@ -44,7 +46,7 @@ public class MenuService {
     @Transactional
     public MenuResponseDto updateMenu(Long menuId, String name, Long price) {
         // 입력 받은 id 존재여부
-        Menu menu = findMenu(menuId);
+        Menu menu = getMenu(menuId);
 
         // 수정한 메뉴이름이 이미 존재하는 경우
         if(menuRepository.existsByName(name) && !menu.getName().equals(name))
@@ -54,13 +56,24 @@ public class MenuService {
         return new MenuResponseDto(menu);
     }
 
+    // 주문한 메뉴 리턴
+    @Transactional(readOnly = true)
+    public List<OrderItemDto> orderedMenu(List<OrderDto> orderDtos){
+        List<OrderItemDto> orderItemDtos = new LinkedList<>();
+        for (OrderDto orderDto : orderDtos) {
+            Menu menu = getMenu(orderDto.getMenuId());
+            orderItemDtos.add(new OrderItemDto(menu.getId(),orderDto.getNumber(),menu.getPrice()));
+        }
+        return orderItemDtos;
+    }
+
     @Cacheable(value = "menu", cacheManager = "cacheManager")
     public List<MenuResponseDto> popularMenu() {
         log.info("cache miss");
         List<Long> ids = menuRepository.popularMenus();
         List<MenuResponseDto> list = new ArrayList<>();
         for (Long id : ids) {
-            Menu menu = findMenu(id);
+            Menu menu = getMenu(id);
             list.add(new MenuResponseDto(menu));
         }
         return list;
@@ -72,7 +85,7 @@ public class MenuService {
         popularMenu();
     }
 
-    private Menu findMenu(Long menuId) {
+    private Menu getMenu(Long menuId) {
         return menuRepository.findById(menuId).orElseThrow(
                 () -> new RequestException(ErrorCode.MENU_NOT_FOUND));
     }

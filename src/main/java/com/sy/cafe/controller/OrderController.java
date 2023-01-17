@@ -1,9 +1,7 @@
 package com.sy.cafe.controller;
 
 import com.sy.cafe.dto.request.OrderRequestDto;
-import com.sy.cafe.dto.request.PointRequestDto;
 import com.sy.cafe.dto.response.OrderResponseDto;
-import com.sy.cafe.dto.response.PointResponseDto;
 import com.sy.cafe.global.ResponseDto;
 import com.sy.cafe.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/orders")
-public class OrdersController {
+public class OrderController {
     private final OrderService orderService;
     @PostMapping
     public ResponseDto<OrderResponseDto> orderMenu(@RequestBody OrderRequestDto dto){

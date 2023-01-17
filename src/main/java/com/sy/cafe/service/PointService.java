@@ -1,13 +1,10 @@
 package com.sy.cafe.service;
 
-import com.sy.cafe.domain.Point;
+import com.sy.cafe.domain.PointHistory;
 import com.sy.cafe.domain.PointType;
 import com.sy.cafe.domain.User;
-import com.sy.cafe.dto.response.PointResponseDto;
-import com.sy.cafe.exception.ErrorCode;
-import com.sy.cafe.exception.RequestException;
+import com.sy.cafe.dto.UserDto;
 import com.sy.cafe.repository.PointRepository;
-import com.sy.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,25 +12,39 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class PointService {
-    private final UserRepository userRepository;
     private final PointRepository pointRepository;
 
     @Transactional
-    public PointResponseDto chargePoint(Long id, Long chargeAmount) {
-        // 입력 받은 id 존재여부
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new RequestException(ErrorCode.USER_NOT_FOUND));
-        // 포인트 충전
-        Long pointAfterCharge = user.chargePoint(chargeAmount);
-        // 포인트 충전 기록
-        Point point = Point.builder()
+    public void chargePoint(Long chargeAmount, UserDto userDto) {
+        User user = dtoToEntity(userDto);
+        // 포인트 충전 이력 추가
+        PointHistory pointHistory = PointHistory.builder()
                 .type(PointType.CHARGE)
                 .user(user)
                 .point(chargeAmount)
                 .build();
-        pointRepository.save(point);
+        pointRepository.save(pointHistory);
 
-        return new PointResponseDto(id, pointAfterCharge);
+    }
+
+    @Transactional
+    public void usePoint(Long orderAmount, UserDto userDto){
+        User user = dtoToEntity(userDto);
+        // 포인트 사용 이력 추가
+        PointHistory pointHistory = PointHistory.builder()
+                .type(PointType.PAYMENT)
+                .user(user)
+                .point(orderAmount)
+                .build();
+        pointRepository.save(pointHistory);
+    }
+
+    private User dtoToEntity(UserDto userDto){
+        return User.builder()
+                .id(userDto.getId())
+                .point(userDto.getPoint())
+                .nickname(userDto.getNickname())
+                .build();
     }
 
 

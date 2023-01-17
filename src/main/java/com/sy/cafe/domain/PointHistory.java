@@ -4,13 +4,14 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
-public class Point extends CreatedTimeEntity{
+public class PointHistory extends CreatedTimeEntity{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
@@ -29,9 +30,10 @@ public class Point extends CreatedTimeEntity{
     private User user;
 
     @Builder
-    public Point(PointType type, Long point, User user) {
+    public PointHistory(PointType type, Long point, User user) {
         this.type = type;
         this.point = point;
         this.user = user;
     }
+
 }

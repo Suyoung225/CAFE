@@ -1,7 +1,5 @@
 package com.sy.cafe.dto.response;
 
-import com.sy.cafe.domain.Orders;
-import com.sy.cafe.domain.User;
 import com.sy.cafe.dto.OrderDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,15 +11,15 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderResponseDto {
     Long userId;
-    Long point;
+    Long currentPoint;
     List<OrderDto> orderList;
     Long totalAmount;
 
     @Builder
-    public OrderResponseDto(User user, Long currentPoint, List<OrderDto> orderList, Orders order) {
-        this.userId = user.getId();
-        this.point = currentPoint;
+    public OrderResponseDto(Long userId, Long currentPoint, List<OrderDto> orderList, Long totalAmount) {
+        this.userId = userId;
+        this.currentPoint = currentPoint;
         this.orderList = orderList;
-        this.totalAmount = order.getAmount();
+        this.totalAmount = totalAmount;
     }
 }

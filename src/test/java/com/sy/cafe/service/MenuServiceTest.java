@@ -1,6 +1,8 @@
 package com.sy.cafe.service;
 
 import com.sy.cafe.domain.Menu;
+import com.sy.cafe.dto.OrderDto;
+import com.sy.cafe.dto.OrderItemDto;
 import com.sy.cafe.exception.ErrorCode;
 import com.sy.cafe.exception.RequestException;
 import com.sy.cafe.repository.MenuRepository;
@@ -60,7 +62,7 @@ class MenuServiceTest {
             menuService.addMenu(name, price); });
 
         // then
-        assertThat("이미 존재하는 데이터입니다.").isEqualTo(exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("이미 존재하는 데이터입니다.");
 
     }
 
@@ -152,5 +154,29 @@ class MenuServiceTest {
         // then
         assertThat("해당 메뉴를 찾을 수 없습니다.").isEqualTo(exception.getMessage());
     }
+
+    @Test
+    @DisplayName("주문한 메뉴")
+    void orderedMenu(){
+        // given
+        List<OrderDto> orderList = Arrays.asList(new OrderDto(1L, 2), new OrderDto(2L,1));
+
+        Menu menu1 = Menu.builder().id(1L).name("아아").price(2000L).build();
+        Menu menu2 = Menu.builder().id(2L).name("따아").price(2000L).build();
+        when(menuRepository.findById(1L)).thenReturn(Optional.of(menu1));
+        when(menuRepository.findById(2L)).thenReturn(Optional.of(menu2));
+
+
+        // when
+        List<OrderItemDto> orderItemList = menuService.orderedMenu(orderList);
+
+        // then
+        assertThat(orderItemList.get(0).getPrice()).isEqualTo(2000L);
+        assertThat(orderItemList.get(0).getMenuId()).isEqualTo(1L);
+        assertThat(orderItemList.get(0).getNumber()).isEqualTo(2);
+        assertThat(orderItemList.get(1).getNumber()).isEqualTo(1);
+
+    }
+
 
 }

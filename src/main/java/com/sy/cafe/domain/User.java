@@ -3,7 +3,7 @@ package com.sy.cafe.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -36,5 +36,6 @@ public class User extends BaseTimeEntity{
         this.point -= point;
         return this.point;
     }
+
 
 }
