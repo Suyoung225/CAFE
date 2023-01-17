@@ -7,7 +7,7 @@
 <div markdown="1">       
 </br>
 
-![2023-01-17](https://user-images.githubusercontent.com/87157566/212794387-6dc89f44-ec7d-48fb-b86e-4f0c8d1e4e24.png)
+![2023-01-17 (1)](https://user-images.githubusercontent.com/87157566/212795609-b18e4e80-a74a-4b6e-ad8b-a62e6c418089.png)
 
 </div>
 </details>
@@ -29,15 +29,15 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `nickname` VARCHAR(20) NOT NULL,
   `point` BIGINT NOT NULL,
-  `created_time` TIMESTAMP NULL,
-  `modified_time` TIMESTAMP NULL,
+  `created_time` TIMESTAMP(3) NULL,
+  `modified_time` TIMESTAMP(3) NULL,
   PRIMARY KEY (`id`));
 
 CREATE TABLE IF NOT EXISTS `mydb`.`point_history` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(50) NOT NULL,
   `point` BIGINT NOT NULL,
-  `created_time` TIMESTAMP NULL,
+  `created_time` TIMESTAMP(3) NULL,
   `user_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_point_history_user_idx` (`user_id` ASC) VISIBLE,
@@ -51,14 +51,14 @@ CREATE TABLE IF NOT EXISTS `mydb`.`menu` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(30) NOT NULL,
   `price` BIGINT NOT NULL,
-  `created_time` TIMESTAMP NULL,
-  `modified_time` TIMESTAMP NULL,
+  `created_time` TIMESTAMP(3) NULL,
+  `modified_time` TIMESTAMP(3) NULL,
   PRIMARY KEY (`id`));
   
   CREATE TABLE IF NOT EXISTS `mydb`.`orders` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `amount` BIGINT NOT NULL,
-  `created_time` TIMESTAMP NULL,
+  `created_time` TIMESTAMP(3) NULL,
   `user_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`));
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`order_item` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `price` BIGINT NOT NULL,
   `number` INT NOT NULL,
-  `created_time` TIMESTAMP NULL,
+  `created_time` TIMESTAMP(3) NULL,
   `menu_id` BIGINT NOT NULL,
   `order_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
@@ -76,7 +76,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`order_item` (
     REFERENCES `mydb`.`orders` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-
 
 ````
 </div>
