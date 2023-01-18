@@ -1,5 +1,8 @@
 package com.sy.cafe.config;
 
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +13,6 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -62,6 +64,25 @@ public class RedisConfig {
 //                .withInitialCacheConfigurations(cacheConfigurations).build();
 
     }
+    @Bean
+    public RedissonClient redissonClient() {
+        Config redisConfig = new Config();
+        redisConfig.useSingleServer()
+                .setAddress("redis://" + host + ":" + port)
+                .setConnectionMinimumIdleSize(5)
+                .setConnectionPoolSize(200);
+//                .setConnectionMinimumIdleSize(5);
+        return Redisson.create(redisConfig);
+    }
+    /*
+    @Bean
+    public RedissonClient redissonClient() {
+        RedissonClient redisson = null;
+        Config config = new Config();
+        config.useSingleServer().setAddress("redis://" + host + ":" + port);
+        redisson = Redisson.create(config);
+        return redisson;
+    }*/
 
 
 }
