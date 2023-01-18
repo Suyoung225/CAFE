@@ -39,7 +39,7 @@ public class UserService {
     }
 
     // 주문 가능 여부 & 결제
-    @DistributeLock(key = "id")
+    @Transactional
     public long order(Long id, Long totalAmount){
         User user = getUser(id);
         if(totalAmount > user.getPoint())

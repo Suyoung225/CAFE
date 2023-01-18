@@ -3,7 +3,7 @@ package com.sy.cafe.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
+
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

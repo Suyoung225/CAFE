@@ -1,5 +1,6 @@
 package com.sy.cafe.service;
 
+import com.sy.cafe.aop.DistributeLock;
 import com.sy.cafe.domain.Order;
 import com.sy.cafe.domain.OrderItem;
 import com.sy.cafe.dto.OrderDto;
@@ -9,7 +10,6 @@ import com.sy.cafe.repository.OrderItemRepository;
 import com.sy.cafe.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class OrderService {
     private final UserService userService;
 
 
-    @Transactional
+    @DistributeLock(key = "userId")
     public OrderResponseDto orderMenu(Long userId, List<OrderDto> orderList) {
 
         // 주문 메뉴 리스트
