@@ -6,8 +6,8 @@
 <summary><strong> OPEN </strong></summary>
 <div markdown="1">       
 </br>
+<img width="759" alt="2023-01-22 (1)" src="https://user-images.githubusercontent.com/87157566/213910980-e5baf954-294f-495b-ade0-b68803465841.png">
 
-![2023-01-17 (1)](https://user-images.githubusercontent.com/87157566/212795609-b18e4e80-a74a-4b6e-ad8b-a62e6c418089.png)
 
 </div>
 </details>
@@ -40,12 +40,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`point_history` (
   `created_time` TIMESTAMP(3) NULL,
   `user_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_point_history_user_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_point_history_user`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `mydb`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  INDEX `fk_point_history_user_idx` (`user_id` ASC)) ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`menu` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -70,12 +65,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`order_item` (
   `menu_id` BIGINT NOT NULL,
   `order_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_order_item_orders1_idx` (`order_id` ASC) VISIBLE,
-  CONSTRAINT `fk_order_item_orders1`
-    FOREIGN KEY (`order_id`)
-    REFERENCES `mydb`.`orders` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  INDEX `fk_order_item_orders1_idx` (`order_id` ASC));
+
 
 ````
 </div>
