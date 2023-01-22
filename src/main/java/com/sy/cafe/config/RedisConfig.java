@@ -18,6 +18,8 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 @EnableCaching
 @Configuration
@@ -45,10 +47,13 @@ public class RedisConfig {
 
     @Bean(name = "cacheManager")
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        ZoneId zoneid = ZoneId.of("Asia/Seoul");
+        long nextDay = LocalDate.now().plusDays(1).atStartOfDay().atZone(zoneid).toInstant().toEpochMilli();
+        long curTime = System.currentTimeMillis();
 
         RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
-                .entryTtl(Duration.ofDays(1))
+                .entryTtl(Duration.ofMillis(nextDay - curTime))
                 .computePrefixWith(CacheKeyPrefix.simple())
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))  //redis 캐시 키 값 저장방식 - StringRedisSerializer
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));// redis 캐시 정보값 저장방식 - GenericJackson2JsonRedisSerializer - json 문자열
@@ -71,7 +76,6 @@ public class RedisConfig {
                 .setAddress("redis://" + host + ":" + port)
                 .setConnectionMinimumIdleSize(5)
                 .setConnectionPoolSize(200);
-//                .setConnectionMinimumIdleSize(5);
         return Redisson.create(redisConfig);
     }
     /*

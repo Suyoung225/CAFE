@@ -4,9 +4,7 @@ import com.sy.cafe.RedisTestContainer;
 import com.sy.cafe.domain.Menu;
 import com.sy.cafe.domain.User;
 import com.sy.cafe.dto.OrderDto;
-import com.sy.cafe.repository.MenuRepository;
-import com.sy.cafe.repository.PointRepository;
-import com.sy.cafe.repository.UserRepository;
+import com.sy.cafe.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,12 +33,20 @@ public class MultiThreadTest extends RedisTestContainer {
     PointRepository pointRepository;
     @Autowired
     MenuRepository menuRepository;
+    @Autowired
+    OrderRepository orderRepository;
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
 
     @BeforeEach
     public void beforeEach() {
         menuRepository.deleteAll();
         pointRepository.deleteAll();
         userRepository.deleteAll();
+        orderItemRepository.deleteAll();
+        orderRepository.deleteAll();
+
         User user = User.builder().nickname("sy").point(10000L).build();
         userRepository.save(user);
         Menu menu = Menu.builder().price(500L).name("아아").build();
@@ -100,5 +106,34 @@ public class MultiThreadTest extends RedisTestContainer {
 
         // then
         assertThat(point).isEqualTo(20000L);
+    }
+
+    @Test
+    @DisplayName("동시 충전과 주문")
+    void multiThreadChargeAndOrder() throws InterruptedException{
+        Long userId = userRepository.findAll().get(0).getId();
+        Long menuId = menuRepository.findAll().get(0).getId();
+        List<OrderDto> orderList = List.of(new OrderDto(menuId,20)); // total:10,000원
+        final int THREAD_COUNT = 40;
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
+        CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
+
+        // when
+        IntStream.range(0, THREAD_COUNT).forEach(e -> executorService.submit(() -> {
+                    try {
+                        orderService.orderMenu(userId,orderList);
+                        userService.chargePoint(userId,10000L);
+                    } finally {
+                        latch.countDown();
+                    }
+                }
+        ));
+        latch.await();
+
+        User user = userRepository.findAll().get(0);
+        long point = user.getPoint();
+
+        // then
+        assertThat(point).isEqualTo(10000L);
     }
 }

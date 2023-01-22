@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 @RequiredArgsConstructor
 @Slf4j
 public class DistributeLockAop {
-//    private static final String REDISSON_KEY_PREFIX = "RLOCK_";
+    private static final String REDISSON_KEY_PREFIX = "RLOCK_";
 
     private final RedissonClient redissonClient;
     private final AopForTransaction aopForTransaction;
@@ -29,7 +29,7 @@ public class DistributeLockAop {
         Method method = signature.getMethod();
         DistributeLock distributeLock = method.getAnnotation(DistributeLock.class);
 
-        String key = createKey(signature.getParameterNames(), joinPoint.getArgs(), distributeLock.key());
+        String key = REDISSON_KEY_PREFIX + createKey(signature.getParameterNames(), joinPoint.getArgs(), distributeLock.key());
 
         RLock rLock = redissonClient.getLock(key);
 
