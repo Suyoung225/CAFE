@@ -66,7 +66,7 @@ public class MenuService {
         }
         return orderItemDtos;
     }
-    @Scheduled(cron = "0 0 0 * * ?")
+
     @Cacheable(value = "menu", cacheManager = "cacheManager")
     public List<MenuResponseDto> popularMenu() {
         log.info("cache miss");
@@ -77,6 +77,11 @@ public class MenuService {
             list.add(new MenuResponseDto(menu));
         }
         return list;
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updatePopularMenu(){
+        popularMenu();
     }
 
     private Menu getMenu(Long menuId) {
