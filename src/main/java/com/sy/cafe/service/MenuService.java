@@ -4,18 +4,17 @@ import com.sy.cafe.domain.Menu;
 import com.sy.cafe.dto.OrderDto;
 import com.sy.cafe.dto.OrderItemDto;
 import com.sy.cafe.dto.response.MenuResponseDto;
+import com.sy.cafe.dto.response.PopularMenuDto;
 import com.sy.cafe.exception.ErrorCode;
 import com.sy.cafe.exception.RequestException;
 import com.sy.cafe.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,15 +67,9 @@ public class MenuService {
     }
 
     @Cacheable(value = "menu", cacheManager = "cacheManager")
-    public List<MenuResponseDto> popularMenu() {
+    public List<PopularMenuDto> popularMenu() {
         log.info("cache miss");
-        List<Long> ids = menuRepository.popularMenus();
-        List<MenuResponseDto> list = new ArrayList<>();
-        for (Long id : ids) {
-            Menu menu = getMenu(id);
-            list.add(new MenuResponseDto(menu));
-        }
-        return list;
+        return menuRepository.popularMenus();
     }
 
     @Scheduled(cron = "0 0 0 * * ?")

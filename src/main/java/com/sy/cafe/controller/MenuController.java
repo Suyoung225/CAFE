@@ -2,6 +2,7 @@ package com.sy.cafe.controller;
 
 import com.sy.cafe.dto.request.MenuRequestDto;
 import com.sy.cafe.dto.response.MenuResponseDto;
+import com.sy.cafe.dto.response.PopularMenuDto;
 import com.sy.cafe.global.ResponseDto;
 import com.sy.cafe.service.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class MenuController {
     }
     // 인기 메뉴
     @GetMapping("/popular")
-    public ResponseDto<List<MenuResponseDto>> popularMenu(){
+    public ResponseDto<List<PopularMenuDto>> popularMenu(){
         return ResponseDto.success(menuService.popularMenu());
     }
 
