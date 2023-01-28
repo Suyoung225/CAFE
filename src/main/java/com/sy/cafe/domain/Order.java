@@ -1,8 +1,11 @@
 package com.sy.cafe.domain;
 
+import com.sy.cafe.dto.OrderItemDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -22,10 +25,24 @@ public class Order extends CreatedTimeEntity{
     @Column(nullable = false)
     private Long userId;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+
     @Builder
     public Order(Long amount, Long userId) {
         this.amount = amount;
         this.userId = userId;
+    }
+
+    public static Order createOrder(Long totalAmount, Long userId, List<OrderItemDto> orderItemDtos){
+        Order order = new Order();
+        order.amount = totalAmount;
+        order.userId = userId;
+        order.orderItems = new ArrayList<>();
+        for (OrderItemDto orderItemDto : orderItemDtos) {
+            order.orderItems.add(new OrderItem(orderItemDto, order));
+        }
+        return order;
     }
 
 }

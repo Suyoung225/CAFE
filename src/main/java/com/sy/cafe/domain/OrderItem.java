@@ -4,7 +4,6 @@ import com.sy.cafe.dto.OrderItemDto;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -28,7 +27,6 @@ public class OrderItem extends CreatedTimeEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
-    @NotNull
     private Order order;
 
     public OrderItem(OrderItemDto dto, Order order) {

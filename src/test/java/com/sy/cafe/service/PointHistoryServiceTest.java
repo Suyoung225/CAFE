@@ -1,7 +1,6 @@
 package com.sy.cafe.service;
 
 import com.sy.cafe.domain.User;
-import com.sy.cafe.dto.UserDto;
 import com.sy.cafe.repository.PointRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ class PointHistoryServiceTest {
         // given
         User user = User.builder().id(1L).point(1000L).nickname("sy").build();
         // when
-        pointService.chargePoint(5000L,new UserDto(user));
+        pointService.chargePoint(5000L, user);
         // then
         verify(pointRepository, times(1)).save(any());
     }
@@ -39,7 +38,7 @@ class PointHistoryServiceTest {
         // given
         User user = User.builder().id(1L).point(10000L).nickname("sy").build();
         // when
-        pointService.usePoint(5000L,new UserDto(user));
+        pointService.usePoint(5000L, user);
         // then
         verify(pointRepository, times(1)).save(any());
     }

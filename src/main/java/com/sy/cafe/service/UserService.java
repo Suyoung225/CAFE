@@ -2,7 +2,6 @@ package com.sy.cafe.service;
 
 import com.sy.cafe.aop.DistributeLock;
 import com.sy.cafe.domain.User;
-import com.sy.cafe.dto.UserDto;
 import com.sy.cafe.dto.response.PointResponseDto;
 import com.sy.cafe.dto.response.UserResponseDto;
 import com.sy.cafe.exception.ErrorCode;
@@ -34,7 +33,7 @@ public class UserService {
         // 포인트 충전
         Long pointAfterCharge = user.chargePoint(chargeAmount);
         // 포인트 기록
-        pointService.chargePoint(chargeAmount, new UserDto(user));
+        pointService.chargePoint(chargeAmount, user);
         return new PointResponseDto(id, pointAfterCharge);
     }
 
@@ -42,13 +41,9 @@ public class UserService {
     @Transactional
     public long order(Long id, Long totalAmount){
         User user = getUser(id);
-        if(totalAmount > user.getPoint())
-            throw new RequestException(ErrorCode.BALANCE_INSUFFICIENT);
         long point = user.usePoint(totalAmount);
-        pointService.usePoint(totalAmount, new UserDto(user));
-
+        pointService.usePoint(totalAmount, user);
         return point;
-
     }
 
     private User getUser(Long id){

@@ -1,5 +1,7 @@
 package com.sy.cafe.domain;
 
+import com.sy.cafe.exception.ErrorCode;
+import com.sy.cafe.exception.RequestException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,6 +35,8 @@ public class User extends BaseTimeEntity{
     }
 
     public Long usePoint(Long point){
+        if(point > this.point)
+            throw new RequestException(ErrorCode.BALANCE_INSUFFICIENT);
         this.point -= point;
         return this.point;
     }

@@ -2,7 +2,6 @@ package com.sy.cafe.service;
 
 import com.sy.cafe.aop.DistributeLock;
 import com.sy.cafe.domain.Order;
-import com.sy.cafe.domain.OrderItem;
 import com.sy.cafe.dto.OrderDto;
 import com.sy.cafe.dto.OrderItemDto;
 import com.sy.cafe.dto.response.OrderResponseDto;
@@ -35,14 +34,8 @@ public class OrderService {
         long currentBalance = userService.order(userId, totalAmount);
 
         // 주문 생성
-        Order order = Order.builder().amount(totalAmount).userId(userId).build();
+        Order order = Order.createOrder(totalAmount,userId,orderItemList);
         orderRepository.save(order);
-
-        // 메뉴-주문 생성
-        for (OrderItemDto orderItemDto : orderItemList) {
-            OrderItem orderItem = new OrderItem(orderItemDto, order);
-            orderItemRepository.save(orderItem);
-        }
 
         return OrderResponseDto.builder()
                 .userId(userId)
