@@ -1,5 +1,6 @@
 package com.sy.cafe.service;
 
+import com.sy.cafe.aop.UpdateLock;
 import com.sy.cafe.domain.Menu;
 import com.sy.cafe.dto.OrderDto;
 import com.sy.cafe.dto.OrderItemDto;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class MenuService {
     private final MenuRepository menuRepository;
+    private final PopularMenuService popularMenuService;
 
     // 전체 메뉴 조회
     @Transactional(readOnly = true)
@@ -66,19 +68,24 @@ public class MenuService {
         return orderItemDtos;
     }
 
-    @Cacheable(value = "menu", cacheManager = "cacheManager")
-    public List<PopularMenuDto> popularMenu() {
-        log.info("cache miss");
-        return menuRepository.popularMenus();
-    }
-
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void updatePopularMenu(){
-        popularMenu();
-    }
-
     private Menu getMenu(Long menuId) {
         return menuRepository.findById(menuId).orElseThrow(
                 () -> new RequestException(ErrorCode.MENU_NOT_FOUND));
     }
+
+    // 인기 메뉴 조회
+    @Transactional(readOnly = true)
+    @Cacheable(value = "menu", cacheManager = "cacheManager")
+    public List<PopularMenuDto> popularMenu() {
+        throw new RequestException(ErrorCode.CACHE_UPDATE);
+    }
+
+    // 인기 메뉴 캐시 삭제 및 추가
+    @UpdateLock
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateCache() {
+        popularMenuService.deleteCache();
+        popularMenuService.setPopularMenuCache();
+    }
+
 }
