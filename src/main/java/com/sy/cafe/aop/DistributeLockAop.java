@@ -38,7 +38,7 @@ public class DistributeLockAop {
             if (!available) {
                 return false;
             }
-//            log.info("get lock success {}" , key);
+            log.info("get distribution lock success {}" , key);
             return aopForTransaction.proceed(joinPoint);
         } catch (Exception e) {
             throw new InterruptedException();

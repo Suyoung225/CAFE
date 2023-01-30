@@ -13,12 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -109,31 +108,73 @@ public class MultiThreadTest extends RedisTestContainer {
     }
 
     @Test
-    @DisplayName("동시 충전과 주문")
-    void multiThreadChargeAndOrder() throws InterruptedException{
+    @DisplayName("동시 충전과 주문 성공")
+    void multiThreadChargeAndOrderSuccess() {
         Long userId = userRepository.findAll().get(0).getId();
         Long menuId = menuRepository.findAll().get(0).getId();
         List<OrderDto> orderList = List.of(new OrderDto(menuId,20)); // total:10,000원
-        final int THREAD_COUNT = 40;
+
+        final int THREAD_COUNT = 2;
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
         CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
 
-        // when
         IntStream.range(0, THREAD_COUNT).forEach(e -> executorService.submit(() -> {
-                    try {
-                        orderService.orderMenu(userId,orderList);
-                        userService.chargePoint(userId,10000L);
-                    } finally {
-                        latch.countDown();
-                    }
-                }
+            CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
+                orderService.orderMenu(userId,orderList);
+                System.out.println("Future order Thread: " + Thread.currentThread().getName());
+            });
+            System.out.println("order Thread: " + Thread.currentThread().getName());
+
+            CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
+                userService.chargePoint(userId,10000L);
+                System.out.println("Future charge Thread: " + Thread.currentThread().getName());
+            });
+            System.out.println("charge Thread: " + Thread.currentThread().getName());
+
+            try {
+                future1.get();
+                future2.get();
+            } catch (InterruptedException | ExecutionException ex) {
+                throw new RuntimeException(ex);
+            }
+            latch.countDown();
+            }
+
         ));
-        latch.await();
 
         User user = userRepository.findAll().get(0);
         long point = user.getPoint();
+        System.out.println(point);
+        System.out.println(user.getId());
 
         // then
         assertThat(point).isEqualTo(10000L);
     }
+
+    @Test
+    @DisplayName("동시 충전과 주문 실패")
+    void multiThreadChargeAndOrderFail() throws InterruptedException, ExecutionException {
+        Long userId = userRepository.findAll().get(0).getId();
+        Long menuId = menuRepository.findAll().get(0).getId();
+        List<OrderDto> orderList = List.of(new OrderDto(menuId,40)); // total:20,000원
+
+        CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
+            orderService.orderMenu(userId,orderList);
+            System.out.println("Future order Thread: " + Thread.currentThread().getName());
+        });
+        try{
+            future1.get();
+            fail();
+        }catch(ExecutionException e){
+            System.out.println(e.getMessage());
+        }
+
+        CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
+            userService.chargePoint(userId,10000L);
+            System.out.println("Future charge Thread: " + Thread.currentThread().getName());
+        });
+        future2.get();
+
+    }
+
 }

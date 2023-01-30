@@ -26,15 +26,15 @@ public class UserService {
         return new UserResponseDto(user);
     }
 
-    @DistributeLock(key = "id")
-    public PointResponseDto chargePoint(Long id, Long chargeAmount){
+    @DistributeLock(key = "userId")
+    public PointResponseDto chargePoint(Long userId, Long chargeAmount){
         // 입력 받은 id 존재여부
-        User user = getUser(id);
+        User user = getUser(userId);
         // 포인트 충전
         Long pointAfterCharge = user.chargePoint(chargeAmount);
         // 포인트 기록
         pointService.chargePoint(chargeAmount, user);
-        return new PointResponseDto(id, pointAfterCharge);
+        return new PointResponseDto(userId, pointAfterCharge);
     }
 
     // 주문 가능 여부 & 결제

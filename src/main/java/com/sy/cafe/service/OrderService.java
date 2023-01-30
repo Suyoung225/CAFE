@@ -5,7 +5,6 @@ import com.sy.cafe.domain.Order;
 import com.sy.cafe.dto.OrderDto;
 import com.sy.cafe.dto.OrderItemDto;
 import com.sy.cafe.dto.response.OrderResponseDto;
-import com.sy.cafe.repository.OrderItemRepository;
 import com.sy.cafe.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.List;
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
     private final MenuService menuService;
     private final UserService userService;
 
