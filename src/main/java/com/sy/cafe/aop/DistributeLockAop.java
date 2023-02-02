@@ -1,5 +1,7 @@
 package com.sy.cafe.aop;
 
+import com.sy.cafe.exception.ErrorCode;
+import com.sy.cafe.exception.RequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -40,8 +42,8 @@ public class DistributeLockAop {
             }
             log.info("get distribution lock success {}" , key);
             return aopForTransaction.proceed(joinPoint);
-        } catch (Exception e) {
-            throw new InterruptedException();
+        } catch (InterruptedException e) { 
+            throw new RequestException(ErrorCode.CACHE_UPDATE);
         } finally {
             rLock.unlock();
         }
