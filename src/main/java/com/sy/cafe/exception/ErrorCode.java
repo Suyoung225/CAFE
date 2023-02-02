@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
 
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     CACHE_UPDATE(HttpStatus.NO_CONTENT, "업데이트 중입니다."),
     MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 메뉴를 찾을 수 없습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),

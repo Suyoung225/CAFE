@@ -2,21 +2,26 @@ package com.sy.cafe.service;
 
 import com.sy.cafe.aop.DistributeLock;
 import com.sy.cafe.domain.Order;
+import com.sy.cafe.dto.OrderDataDto;
 import com.sy.cafe.dto.OrderDto;
 import com.sy.cafe.dto.OrderItemDto;
 import com.sy.cafe.dto.response.OrderResponseDto;
 import com.sy.cafe.repository.OrderRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class OrderService {
+public class OrderService{
     private final OrderRepository orderRepository;
     private final MenuService menuService;
     private final UserService userService;
+
+    private final ApplicationEventPublisher eventPublisher;
 
 
     @DistributeLock(key = "userId")
@@ -32,8 +37,11 @@ public class OrderService {
         long currentBalance = userService.order(userId, totalAmount);
 
         // 주문 생성
-        Order order = Order.createOrder(totalAmount,userId,orderItemList);
+        Order order = Order.createOrder(totalAmount, userId, orderItemList);
         orderRepository.save(order);
+
+        // 데이터 수집 플랫폼에 전송
+        eventPublisher.publishEvent(new OrderEvent(new OrderDataDto(order)));
 
         return OrderResponseDto.builder()
                 .userId(userId)
@@ -44,4 +52,12 @@ public class OrderService {
     }
 
 
+    public static class OrderEvent{
+        @Getter
+        private OrderDataDto orderData;
+
+        public OrderEvent(OrderDataDto orderData) {
+            this.orderData = orderData;
+        }
+    }
 }

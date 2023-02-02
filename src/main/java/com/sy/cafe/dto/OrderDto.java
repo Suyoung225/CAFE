@@ -1,6 +1,6 @@
 package com.sy.cafe.dto;
 
-import com.sy.cafe.domain.PointHistory;
+import com.sy.cafe.domain.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +13,11 @@ import java.util.Objects;
 public class OrderDto {
     Long menuId;
     int number;
+
+    public OrderDto(OrderItem orderItem){
+        this.menuId = orderItem.getMenuId();
+        this.number = orderItem.getNumber();
+    }
 
     @Override
     public boolean equals(Object o) {
