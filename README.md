@@ -8,7 +8,7 @@
 - 지난 7일 간 인기메뉴 목록 조회
 - 포인트 충전하기 
 - 커피 주문 및 결제 
-- 주문 내역을 데이터 수집 플랫폼으로 실시간 전송 (구현중) 
+- 주문 내역을 데이터 수집 플랫폼으로 실시간 전송
 
 ## ⛓ERD
 <details>
@@ -98,7 +98,12 @@ https://transparent-overcoat-20e.notion.site/21f006da338c4ef59c27d45cc34e7171?v=
 데이터 타입, fk
 
 ### 주문
-cascade로 order_iterm까지 한 번에 저장
+cascade로 order_item까지 한 번에 저장
+
+### 데이터 수집 플랫폼으로 데이터 전송
+서비스 요구사항: 단방향 통신만 필요하고, 이벤트(주문)가 발생했을 때만 데이터를 전송하고, 실시간으로 플랫폼에 데이터가 보내져야 한다. <br>
+**SSE(Sever-Sent-Events)**는 이벤트가 서버에서 클라이언트 방향으로만 단방향 통신이며 HTTP 프로토콜만으로 사용이 가능하며, 클라이언트가 한 번 서버에 연결(구독)을 하면 주기적인 요청없이 서버에서 해당 클라이언트로 실시간으로 데이터를 보낼 수 있다.  <br>
+또한 Spring Framework 4.2부터 SSE 통신을 지원하는 SseEmitter 클래스가 생겨 spring에서 손쉽게 구현이 가능하여 SSE를 사용하여 구현하였다.
 
 ### 인기메뉴 조회
 querydsl, order_item 테이블에서 dto로 인기메뉴 id와 주문량 select <br>
@@ -112,3 +117,4 @@ controller, service, repository 단위테스트<br>
 #### 주문 및 포인트 결제 시 동시성 제어 위해 Redisson 분산락 이용
 
 #### 인기메뉴 캐시 업데이트 한 번만 일어나도록 스케줄러와 Redisson 분산락 이용
+
