@@ -42,8 +42,8 @@ public class DistributeLockAop {
             }
             log.info("get distribution lock success {}" , key);
             return aopForTransaction.proceed(joinPoint);
-        } catch (InterruptedException e) { 
-            throw new RequestException(ErrorCode.CACHE_UPDATE);
+        } catch (InterruptedException e) {
+            throw new RequestException(ErrorCode.DUPLICATED_REQUEST);
         } finally {
             rLock.unlock();
         }
