@@ -77,13 +77,14 @@ public class MenuService {
     @Transactional(readOnly = true)
     @Cacheable(value = "menu", cacheManager = "cacheManager")
     public List<PopularMenuDto> popularMenu() {
-        return menuRepository.popularMenus();
+        throw new RequestException(ErrorCode.CACHE_UPDATE);
     }
 
     // 인기 메뉴 캐시 삭제 및 추가
     @UpdateLock
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateCache() {
+        popularMenuService.deleteCache();
         popularMenuService.setPopularMenuCache();
     }
 

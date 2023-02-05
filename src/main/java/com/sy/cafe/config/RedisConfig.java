@@ -48,7 +48,7 @@ public class RedisConfig {
     @Bean(name = "cacheManager")
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         ZoneId zoneid = ZoneId.of("Asia/Seoul");
-        long nextDay = LocalDate.now().plusDays(2).atStartOfDay().atZone(zoneid).toInstant().toEpochMilli();
+        long nextDay = LocalDate.now().plusDays(1).atStartOfDay().atZone(zoneid).toInstant().toEpochMilli();
         long curTime = System.currentTimeMillis();
 
         RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()

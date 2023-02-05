@@ -23,5 +23,10 @@ public class PopularMenuService {
         return menuRepository.popularMenus();
     }
 
+    // 인기 메뉴 캐시 삭제
+    @CacheEvict(value = "menu", allEntries = true)
+    public void deleteCache() {
+        log.info("캐시 삭제");
+    }
 
 }
