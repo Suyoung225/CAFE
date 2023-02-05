@@ -1,6 +1,5 @@
 package com.sy.cafe.service;
 
-import com.sy.cafe.dto.OrderDataDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -13,9 +12,8 @@ public class OrderEventListener {
     private final DataTransferService dataTransferService;
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, classes = OrderService.OrderEvent.class)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handle(OrderService.OrderEvent event) {
-        OrderDataDto orderData = event.getOrderData();
-        dataTransferService.sendOrderData(orderData);
+        dataTransferService.sendOrderData(event.getOrderData());
     }
 }
