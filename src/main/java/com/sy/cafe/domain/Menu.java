@@ -1,5 +1,7 @@
 package com.sy.cafe.domain;
 
+import com.sy.cafe.exception.ErrorCode;
+import com.sy.cafe.exception.RequestException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,19 +24,27 @@ public class Menu extends BaseTimeEntity{
     private Long price;
 
     public Menu(String name, Long price) {
-        if(name.length() <= 30){
+        if(name.length() <= 30)
             this.name = name;
-        }
+        else
+            throw new RequestException(ErrorCode.BAD_REQUEST);
+
         if(price >= 0)
             this.price = price;
+        else
+            throw new RequestException(ErrorCode.BAD_REQUEST);
     }
 
     public void update(String name, Long price) {
-        if(name.length() <= 30){
+        if(name.length() <= 30)
             this.name = name;
-        }
+        else
+            throw new RequestException(ErrorCode.BAD_REQUEST);
+
         if(price >= 0)
             this.price = price;
+        else
+            throw new RequestException(ErrorCode.BAD_REQUEST);
     }
 
 }

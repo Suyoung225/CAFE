@@ -80,7 +80,7 @@ public class MenuService {
         return menuRepository.popularMenus();
     }
 
-    // 인기 메뉴 캐시 삭제 및 추가
+    // 인기 메뉴 캐시 추가
     @UpdateLock
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateCache() {
