@@ -58,7 +58,6 @@
 <details>
 <summary><strong> DDL </strong></summary>
 <div markdown="1">       
-</br>
 
 ````sql
 
@@ -113,13 +112,11 @@ CREATE TABLE IF NOT EXISTS `mydb`.`order_item` (
 </details>
 </br>
 
-
 ### ✨ 인기메뉴 조회 - Redis Cache
 - QueryDSL을 이용해 order_item 테이블과 menu 테이블을 innerjoin 하고 집계한 날 8일 전부터 전날까지의 주문 데이터에서 가장 주문량이 많은 세 가지 메뉴의 메뉴 id, 이름, 1주일 간의 주문량을 select합니다.  
 <details>
 <summary><strong> Code </strong></summary>
 <div markdown="1">       
-</br>
 
 ````java
 public List<PopularMenuDto> popularMenus() {
@@ -139,10 +136,9 @@ public List<PopularMenuDto> popularMenus() {
 ````
 </div>
 </details>
-</br>
 
 - 하루에 한 번 밤 12시에 위와 같은 방법으로 연산한 주간 인기 메뉴 연산 결과를 Redis에 캐시로 저장합니다. 매일 주간 인기 메뉴를 업데이트 할 때 캐시가 비워지지 않게 하기 위해 캐시 유효기간(ttl)을 2일로 설정하였습니다. 
-- **@Cacheable** 어노테이션을 사용하여 이용자가 인기 메뉴를 조회할 때 캐시에 저장된 데이터를 리턴하며, 만약 Redis 서버가 작동하지 않거나 캐시가 유실됐을 경우에는 다시 위와 같은 연산을 하여 이용자에게 리턴하고 그 결과를 Redis에 캐시로 저장합니다.
+- **@Cacheable** 어노테이션을 사용하여 이용자가 인기 메뉴를 조회할 때 캐싱된 데이터를 리턴하며, 만약 Redis 서버가 작동하지 않거나 캐시가 유실됐을 경우에는 다시 위와 같은 연산을 하여 이용자에게 리턴하고 그 결과를 Redis에 캐시로 저장합니다.
 
 <br>
 
@@ -152,7 +148,6 @@ public List<PopularMenuDto> popularMenus() {
 <details>
 <summary><strong> Code </strong></summary>
 <div markdown="1">       
-</br>
 
 ````java
 // OrderEventListener
@@ -189,7 +184,6 @@ public static class OrderEvent{
 
 </div>
 </details>
-</br>
 
 - **SSE(Sever-Sent-Events)** 는 이벤트가 서버에서 클라이언트 방향으로만 **단방향 통신**이며 **HTTP 프로토콜**만으로 사용이 가능하며, 클라이언트가 한 번 서버에 연결(구독)을 하면 **주기적인 요청없이** 서버에서 해당 클라이언트로 **실시간**으로 데이터를 보낼 수 있습니다. 또한 **Spring Framework 4.2**부터 SSE 통신을 지원하는 **SseEmitter** 클래스가 생겨 Spring에서 손쉽게 구현이 가능하여 SSE를 사용하여 구현하였습니다.
 - 클라이언트(데이터 수집 플랫폼)는 "/connect" url로 서버와 연결 요청을 보면 Timeout이 되는 시간까지 추가적인 요청 없이 주문 데이터를 실시간으로 수집할 수 있습니다.
@@ -209,7 +203,7 @@ public static class OrderEvent{
 </br>
 
 ### ✨ 테스트
-- **객체 지향적인 개발**과 **리팩토링의 용이성**을 위해 controller, service, repository 코드에 대한 **기능별 단위테스트**를 모두 작성하였습니다.
+- **객체 지향적인 개발**과 **리팩토링의 용이성**을 위해 Controller, Service, Repository 코드에 대한 **기능별 단위테스트**를 모두 작성하였습니다.
 - redisson 분산락을 사용한 동시 충전, 주문 코드 테스트는 **멀티 쓰레드에서의 동시성 테스트**를 별도로 작성하였습니다.
 - 주간 인기 메뉴 조회 repository 테스트 시에는 **DateTimeProvider**와 **AuditingHandler**를 각각 **MockBean**과 **SpyBean**으로 주입 받아 현재 시간을 수정하여 조회 결과를 확인하였습니다.
 - **테스트 profile**을 설정하여 테스트 DB는 local MySql의 테스트용 스키마를 사용하였고, Redis는 **도커로 테스트 컨테이너**를 생성하여 테스트하였습니다.
