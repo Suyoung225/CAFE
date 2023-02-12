@@ -39,11 +39,20 @@ spring:
     activate:
       on-profile: test
 
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/test
+#    username: root
+#    password: 1234
+  h2:
+      console:
+        enabled: 'true'
+        settings:
+          web-allow-others: 'true'
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test
-    username: root
-    password: 1234
+    username: sa
+    url: jdbc:h2:mem:testdb
+    password: ''
 
   mvc:
     pathmatch:
