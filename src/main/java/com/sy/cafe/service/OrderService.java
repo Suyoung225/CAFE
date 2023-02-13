@@ -30,8 +30,8 @@ public class OrderService{
         // 주문 메뉴 리스트
         List<OrderItemDto> orderItemList = menuService.orderedMenu(orderList);
 
-        long totalAmount = 0;
-        for (OrderItemDto dto : orderItemList) totalAmount += dto.getPrice() * dto.getNumber();
+        // 주문 총액
+        long totalAmount = orderItemList.stream().mapToLong(i -> i.getPrice() * i.getNumber()).sum();
 
         // 유저 주문 가능 여부 확인, 결제
         long currentBalance = userService.order(userId, totalAmount);

@@ -46,10 +46,10 @@ public class MenuService {
     // 메뉴 수정
     @Transactional
     public MenuResponseDto updateMenu(Long menuId, String name, Long price) {
-        // 입력 받은 id 존재여부
+        // 입력 받은 id 존재 여부
         Menu menu = getMenu(menuId);
 
-        // 수정한 메뉴이름이 이미 존재하는 경우
+        // 수정한 메뉴 이름이 존재하는 경우
         if(menuRepository.existsByName(name) && !menu.getName().equals(name))
             throw new RequestException(ErrorCode.ALREADY_EXISTS);
 
@@ -60,12 +60,11 @@ public class MenuService {
     // 주문한 메뉴 리턴
     @Transactional(readOnly = true)
     public List<OrderItemDto> orderedMenu(List<OrderDto> orderDtos){
-        List<OrderItemDto> orderItemDtos = new LinkedList<>();
-        for (OrderDto orderDto : orderDtos) {
-            Menu menu = getMenu(orderDto.getMenuId());
-            orderItemDtos.add(new OrderItemDto(menu.getId(),orderDto.getNumber(),menu.getPrice()));
-        }
-        return orderItemDtos;
+        return orderDtos.stream()
+                .map(dto -> {
+                    Menu menu = getMenu(dto.getMenuId());
+                    return new OrderItemDto(menu.getId(), dto.getNumber(), menu.getPrice());
+                }).collect(Collectors.toList());
     }
 
     private Menu getMenu(Long menuId) {
