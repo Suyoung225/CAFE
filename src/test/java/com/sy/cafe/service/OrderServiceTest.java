@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,6 @@ import static org.mockito.Mockito.when;
 class OrderServiceTest {
     @InjectMocks
     OrderService orderService;
-
     @Mock
     UserService userService;
     @Mock
@@ -30,6 +30,8 @@ class OrderServiceTest {
     OrderRepository orderRepository;
     @Mock
     OrderItemRepository orderItemRepository;
+    @Mock
+    ApplicationEventPublisher eventPublisher;
 
     @Test
     @DisplayName("주문 성공")

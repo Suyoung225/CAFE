@@ -1,6 +1,5 @@
 package com.sy.cafe.service;
 
-import com.sy.cafe.RedisTestContainer;
 import com.sy.cafe.domain.Menu;
 import com.sy.cafe.domain.User;
 import com.sy.cafe.dto.OrderDto;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class MultiThreadTest extends RedisTestContainer {
+public class MultiThreadTest{
     @Autowired
     UserService userService;
     @Autowired
@@ -40,12 +40,6 @@ public class MultiThreadTest extends RedisTestContainer {
 
     @BeforeEach
     public void beforeEach() {
-        menuRepository.deleteAll();
-        pointRepository.deleteAll();
-        userRepository.deleteAll();
-        orderItemRepository.deleteAll();
-        orderRepository.deleteAll();
-
         User user = User.builder().nickname("sy").point(10000L).build();
         userRepository.save(user);
         Menu menu = Menu.builder().price(500L).name("아아").build();
