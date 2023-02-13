@@ -219,8 +219,7 @@ public static class OrderEvent{
 - **객체 지향적인 개발**과 **리팩토링의 용이성**을 위해 Controller, Service, Repository 코드에 대한 **기능별 단위테스트**를 모두 작성하였습니다.
 - Redisson 분산락을 사용한 동시 충전, 주문 코드 테스트는 **멀티 쓰레드에서의 동시성 테스트**를 별도로 작성하였습니다.
 - 주간 인기 메뉴 조회 Repository 테스트 시에는 **DateTimeProvider**와 **AuditingHandler**를 각각 **MockBean**과 **SpyBean**으로 주입 받아 현재 시간을 수정하여 조회 결과를 확인하였습니다.
-- **테스트 profile**을 설정하여 테스트 DB는 H2를 사용하였고, Redis는 **Docker** 로 **테스트 컨테이너**를 생성하여 테스트하였습니다.
-
+- 통합 테스트 시 **프로젝트에 의존하는 로컬 환경**을 구성하기 위해 테스트 DB는 **H2**와 **Embedded Redis**를 사용하였습니다.
 
 <br>
 
