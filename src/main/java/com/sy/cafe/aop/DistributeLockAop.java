@@ -1,7 +1,6 @@
 package com.sy.cafe.aop;
 
-import com.sy.cafe.exception.ErrorCode;
-import com.sy.cafe.exception.RequestException;
+import com.sy.cafe.exception.DuplicatedOrderRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -43,7 +42,7 @@ public class DistributeLockAop {
             log.info("get distribution lock success {}" , key);
             return aopForTransaction.proceed(joinPoint);
         } catch (InterruptedException e) {
-            throw new RequestException(ErrorCode.DUPLICATED_REQUEST);
+            throw new DuplicatedOrderRequestException("중복된 주문 요청입니다.");
         } finally {
             rLock.unlock();
         }

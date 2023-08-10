@@ -1,7 +1,8 @@
 package com.sy.cafe.repository;
 
 import com.sy.cafe.config.TestConfig;
-import com.sy.cafe.domain.User;
+import com.sy.cafe.user.domain.User;
+import com.sy.cafe.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

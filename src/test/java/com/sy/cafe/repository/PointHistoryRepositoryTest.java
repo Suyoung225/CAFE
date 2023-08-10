@@ -1,9 +1,10 @@
 package com.sy.cafe.repository;
 
 import com.sy.cafe.config.TestConfig;
-import com.sy.cafe.domain.PointHistory;
-import com.sy.cafe.domain.PointType;
-import com.sy.cafe.domain.User;
+import com.sy.cafe.pointhistory.domain.PointHistory;
+import com.sy.cafe.pointhistory.domain.PointType;
+import com.sy.cafe.pointhistory.repository.PointRepository;
+import com.sy.cafe.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

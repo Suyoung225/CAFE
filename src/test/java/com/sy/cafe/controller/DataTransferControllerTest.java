@@ -1,6 +1,7 @@
 package com.sy.cafe.controller;
 
-import com.sy.cafe.service.DataTransferService;
+import com.sy.cafe.sse.DataTransferController;
+import com.sy.cafe.sse.DataTransferService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

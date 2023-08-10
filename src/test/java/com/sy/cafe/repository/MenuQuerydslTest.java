@@ -1,10 +1,13 @@
 package com.sy.cafe.repository;
 
 import com.sy.cafe.config.TestConfig;
-import com.sy.cafe.domain.Menu;
-import com.sy.cafe.domain.Order;
-import com.sy.cafe.domain.OrderItem;
-import com.sy.cafe.dto.response.PopularMenuDto;
+import com.sy.cafe.menu.domain.Menu;
+import com.sy.cafe.order.domain.Order;
+import com.sy.cafe.order.domain.OrderItem;
+import com.sy.cafe.menu.controller.dto.PopularMenuDto;
+import com.sy.cafe.menu.repository.MenuRepository;
+import com.sy.cafe.order.repository.OrderItemRepository;
+import com.sy.cafe.order.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

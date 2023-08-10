@@ -1,8 +1,9 @@
 package com.sy.cafe.repository;
 
 import com.sy.cafe.config.TestConfig;
-import com.sy.cafe.domain.Order;
-import com.sy.cafe.domain.OrderItem;
+import com.sy.cafe.order.domain.Order;
+import com.sy.cafe.order.domain.OrderItem;
+import com.sy.cafe.order.repository.OrderItemRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

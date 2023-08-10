@@ -24,7 +24,7 @@ spring:
       hibernate:
         format_sql: 'true'
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
 
   cache:
     type: redis

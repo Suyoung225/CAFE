@@ -1,7 +1,8 @@
 package com.sy.cafe.service;
 
-import com.sy.cafe.domain.User;
-import com.sy.cafe.repository.PointRepository;
+import com.sy.cafe.pointhistory.service.PointHistoryServiceImpl;
+import com.sy.cafe.user.domain.User;
+import com.sy.cafe.pointhistory.repository.PointRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.verify;
 class PointHistoryServiceTest {
 
     @InjectMocks
-    private PointService pointService;
+    private PointHistoryServiceImpl pointService;
     @Mock
     private PointRepository pointRepository;
 

@@ -1,7 +1,8 @@
 package com.sy.cafe.repository;
 
 import com.sy.cafe.config.TestConfig;
-import com.sy.cafe.domain.Menu;
+import com.sy.cafe.menu.domain.Menu;
+import com.sy.cafe.menu.repository.MenuRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
