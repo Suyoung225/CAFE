@@ -46,9 +46,9 @@ class UserControllerTest {
                         .characterEncoding("UTF-8")
                         .content(mapper.writeValueAsString(new UserRegisterDto("회원1"))))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.userId").value(1L))
-                .andExpect(jsonPath("$.data.nickname").value("회원1"))
-                .andExpect(jsonPath("$.data.point").value(0L));
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andExpect(jsonPath("$.nickname").value("회원1"))
+                .andExpect(jsonPath("$.point").value(0L));
     }
     @Test
     @DisplayName("포인트 충전")
@@ -62,8 +62,8 @@ class UserControllerTest {
                         .characterEncoding("UTF-8")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.userId").value(1))
-                .andExpect(jsonPath("$.data.point").value(10000L));
+                .andExpect(jsonPath("$.userId").value(1))
+                .andExpect(jsonPath("$.point").value(10000L));
     }
 
     @Test
@@ -77,7 +77,7 @@ class UserControllerTest {
                         .characterEncoding("UTF-8")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error.message").value("해당 id의 유저가 존재하지 않습니다."));
+                .andExpect(jsonPath("$.message").value("해당 id의 유저가 존재하지 않습니다."));
     }
 
 }

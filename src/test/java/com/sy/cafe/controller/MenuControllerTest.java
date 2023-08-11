@@ -46,8 +46,8 @@ class MenuControllerTest {
                         .contentType("application/json")
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].name").value("메뉴1"))
-                .andExpect(jsonPath("$.data[1].name").value("메뉴2"));
+                .andExpect(jsonPath("$.[0].name").value("메뉴1"))
+                .andExpect(jsonPath("$.[1].name").value("메뉴2"));
     }
 
     @Test
@@ -62,8 +62,8 @@ class MenuControllerTest {
                         .characterEncoding("UTF-8")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name").value("메뉴1"))
-                .andExpect(jsonPath("$.data.price").value(2000L));
+                .andExpect(jsonPath("$.name").value("메뉴1"))
+                .andExpect(jsonPath("$.price").value(2000L));
     }
     @Test
     @DisplayName("중복된 이름의 메뉴 추가")
@@ -76,7 +76,7 @@ class MenuControllerTest {
                         .characterEncoding("UTF-8")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error.message").value("이미 존재하는 데이터입니다."));
+                .andExpect(jsonPath("$.message").value("메뉴가 존재합니다."));
     }
 
     @Test
@@ -91,8 +91,8 @@ class MenuControllerTest {
                         .characterEncoding("UTF-8")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name").value("메뉴11"))
-                .andExpect(jsonPath("$.data.price").value(2000L));
+                .andExpect(jsonPath("$.name").value("메뉴11"))
+                .andExpect(jsonPath("$.price").value(2000L));
     }
 
 }

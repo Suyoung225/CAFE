@@ -48,10 +48,10 @@ class OrderControllerTest {
                         .characterEncoding("UTF-8")
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.userId").value(1))
-                .andExpect(jsonPath("$.data.currentPoint").value(1000))
-                .andExpect(jsonPath("$.data.totalAmount").value(6000))
-                .andExpect(jsonPath("$.data.orderList[0].menuId").value(1));
+                .andExpect(jsonPath("$.userId").value(1))
+                .andExpect(jsonPath("$.currentPoint").value(1000))
+                .andExpect(jsonPath("$.totalAmount").value(6000))
+                .andExpect(jsonPath("$.orderList[0].menuId").value(1));
     }
     @Test
     @DisplayName("주문 시 포인트 부족")
@@ -66,7 +66,7 @@ class OrderControllerTest {
                         .characterEncoding("UTF-8")
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error.message").value("포인트가 부족합니다."));
+                .andExpect(jsonPath("$.message").value("포인트가 부족합니다."));
     }
 
 }
