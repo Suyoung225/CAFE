@@ -1,11 +1,12 @@
 package com.sy.cafe.service;
 
-import com.sy.cafe.domain.Menu;
-import com.sy.cafe.dto.OrderDto;
-import com.sy.cafe.dto.OrderItemDto;
-import com.sy.cafe.exception.ErrorCode;
-import com.sy.cafe.exception.RequestException;
-import com.sy.cafe.repository.MenuRepository;
+import com.sy.cafe.exception.DuplicatedMenuException;
+import com.sy.cafe.exception.MenuNotFoundException;
+import com.sy.cafe.menu.domain.Menu;
+import com.sy.cafe.menu.repository.MenuRepository;
+import com.sy.cafe.menu.service.MenuService;
+import com.sy.cafe.order.controller.dto.OrderItemDto;
+import com.sy.cafe.order.controller.dto.OrderMenuIdNumberDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,7 +59,7 @@ class MenuServiceTest {
         when(menuRepository.existsByName(name)).thenReturn(true);
 
         // when
-        RequestException exception = assertThrows(RequestException.class, ()-> {
+        DuplicatedMenuException exception = assertThrows(DuplicatedMenuException.class, ()-> {
             menuService.addMenu(name, price); });
 
         // then
@@ -76,8 +77,8 @@ class MenuServiceTest {
         when(menuRepository.findAll()).thenReturn(menuList);
 
         // when
-        String menu1Name = menuService.allMenu().get(0).getName();
-        String menu2Name = menuService.allMenu().get(1).getName();
+        String menu1Name = menuService.listAllMenu().get(0).getName();
+        String menu2Name = menuService.listAllMenu().get(1).getName();
 
         // then
         assertThat(menu1Name).isEqualTo("아아");
@@ -134,21 +135,21 @@ class MenuServiceTest {
 
 
         // when
-        RequestException exception = assertThrows(RequestException.class, ()-> {
+        DuplicatedMenuException exception = assertThrows(DuplicatedMenuException.class, ()-> {
         menuService.updateMenu(1L, name2, price); });
 
         // then
-        assertThat("이미 존재하는 데이터입니다.").isEqualTo(exception.getMessage());
+        assertThat("메뉴가 존재합니다.").isEqualTo(exception.getMessage());
     }
 
     @Test
     @DisplayName("존재하지 않는 메뉴id")
     void updateMenuWithWrongID() {
         // given
-        when(menuRepository.findById(1L)).thenThrow(new RequestException(ErrorCode.MENU_NOT_FOUND));
+        when(menuRepository.findById(1L)).thenThrow(new MenuNotFoundException("해당 id의 메뉴가 존재하지 않습니다."));
 
         // when
-        RequestException exception = assertThrows(RequestException.class, ()-> {
+        MenuNotFoundException exception = assertThrows(MenuNotFoundException.class, ()-> {
             menuService.updateMenu(1L, "아아", 2000L); });
 
         // then
@@ -159,7 +160,7 @@ class MenuServiceTest {
     @DisplayName("주문한 메뉴")
     void orderedMenu(){
         // given
-        List<OrderDto> orderList = Arrays.asList(new OrderDto(1L, 2), new OrderDto(2L,1));
+        List<OrderMenuIdNumberDto> orderList = Arrays.asList(new OrderMenuIdNumberDto(1L, 2), new OrderMenuIdNumberDto(2L,1));
 
         Menu menu1 = Menu.builder().id(1L).name("아아").price(2000L).build();
         Menu menu2 = Menu.builder().id(2L).name("따아").price(2000L).build();
@@ -168,7 +169,7 @@ class MenuServiceTest {
 
 
         // when
-        List<OrderItemDto> orderItemList = menuService.orderedMenu(orderList);
+        List<OrderItemDto> orderItemList = menuService.getOrderedMenu(orderList);
 
         // then
         assertThat(orderItemList.get(0).getPrice()).isEqualTo(2000L);

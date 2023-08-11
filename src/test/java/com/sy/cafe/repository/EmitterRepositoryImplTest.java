@@ -1,5 +1,7 @@
 package com.sy.cafe.repository;
 
+import com.sy.cafe.sse.EmitterRepository;
+import com.sy.cafe.sse.EmitterRepositoryImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

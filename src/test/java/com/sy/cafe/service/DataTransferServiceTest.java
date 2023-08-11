@@ -1,9 +1,10 @@
 package com.sy.cafe.service;
 
-import com.sy.cafe.dto.OrderDataDto;
-import com.sy.cafe.dto.OrderDto;
-import com.sy.cafe.repository.EmitterRepository;
-import com.sy.cafe.repository.OrderRepository;
+import com.sy.cafe.order.domain.OrderDataToTransfer;
+import com.sy.cafe.order.controller.dto.OrderMenuIdNumberDto;
+import com.sy.cafe.sse.EmitterRepository;
+import com.sy.cafe.order.repository.OrderRepository;
+import com.sy.cafe.sse.DataTransferService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,15 +55,15 @@ class DataTransferServiceTest {
 
         // when, then
         assertDoesNotThrow(() -> dataTransferService.subscribe(DATA_PLATFORM_ID + "1675313587027"));
-        verify(orderRepository, times(1)).findBycreatedTimeAfter(any());
+        verify(orderRepository, times(1)).findByCreatedTimeAfter(any());
     }
 
     @Test
     @DisplayName("주문 데이터 전송")
     void sendOrderData() {
         // given
-        List<OrderDto> orderList = Arrays.asList(new OrderDto(1L, 2), new OrderDto(2L,1));
-        OrderDataDto orderData = new OrderDataDto(1L, orderList, 4000L);
+        List<OrderMenuIdNumberDto> orderList = Arrays.asList(new OrderMenuIdNumberDto(1L, 2), new OrderMenuIdNumberDto(2L,1));
+        OrderDataToTransfer orderData = new OrderDataToTransfer(1L, orderList, 4000L);
 
         SseEmitter sseEmitter = new SseEmitter(60L * 1000 * 60);
         String emitterId = DATA_PLATFORM_ID + System.currentTimeMillis();

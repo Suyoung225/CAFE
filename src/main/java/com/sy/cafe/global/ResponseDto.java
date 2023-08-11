@@ -16,7 +16,5 @@ public class ResponseDto<T> {
         return new ResponseDto<>(true, data, null);
     }
 
-    public static <T> ResponseDto<T> fail(HttpStatus httpStatus, String message) {
-        return new ResponseDto<>(false, null, new Error(httpStatus, message));
-    }
+
 }

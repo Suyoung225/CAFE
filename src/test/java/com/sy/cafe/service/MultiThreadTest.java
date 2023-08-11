@@ -1,14 +1,24 @@
 package com.sy.cafe.service;
 
-import com.sy.cafe.domain.Menu;
-import com.sy.cafe.domain.User;
-import com.sy.cafe.dto.OrderDto;
-import com.sy.cafe.repository.*;
+import com.sy.cafe.EmbeddedRedisTestConfig;
+import com.sy.cafe.RedisTestConfig;
+import com.sy.cafe.menu.domain.Menu;
+import com.sy.cafe.pointhistory.repository.PointRepository;
+import com.sy.cafe.user.controller.dto.PointChargeRequestDto;
+import com.sy.cafe.user.domain.User;
+import com.sy.cafe.order.controller.dto.OrderMenuIdNumberDto;
+import com.sy.cafe.menu.repository.MenuRepository;
+import com.sy.cafe.order.repository.OrderItemRepository;
+import com.sy.cafe.order.repository.OrderRepository;
+import com.sy.cafe.order.service.OrderServiceImpl;
+import com.sy.cafe.user.repository.UserRepository;
+import com.sy.cafe.user.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 
@@ -23,9 +33,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 @ActiveProfiles("test")
 public class MultiThreadTest{
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
     @Autowired
-    OrderService orderService;
+    OrderServiceImpl orderService;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -52,7 +62,7 @@ public class MultiThreadTest{
     void Order() throws InterruptedException{
         Long userId = userRepository.findAll().get(0).getId();
         Long menuId = menuRepository.findAll().get(0).getId();
-        List<OrderDto> orderList = List.of(new OrderDto(menuId,1));
+        List<OrderMenuIdNumberDto> orderList = List.of(new OrderMenuIdNumberDto(menuId,1));
         final int THREAD_COUNT = 20;
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
         CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
@@ -86,7 +96,7 @@ public class MultiThreadTest{
         // when
         IntStream.range(0, THREAD_COUNT).forEach(e -> executorService.submit(() -> {
                     try {
-                        userService.chargePoint(id,100L);
+                        userService.chargePoint(new PointChargeRequestDto(id,100L));
                     } finally {
                         latch.countDown();
                     }
@@ -106,7 +116,7 @@ public class MultiThreadTest{
     void multiThreadChargeAndOrderSuccess() {
         Long userId = userRepository.findAll().get(0).getId();
         Long menuId = menuRepository.findAll().get(0).getId();
-        List<OrderDto> orderList = List.of(new OrderDto(menuId,20)); // total:10,000원
+        List<OrderMenuIdNumberDto> orderList = List.of(new OrderMenuIdNumberDto(menuId,20)); // total:10,000원
 
         final int THREAD_COUNT = 2;
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
@@ -120,7 +130,7 @@ public class MultiThreadTest{
             System.out.println("order Thread: " + Thread.currentThread().getName());
 
             CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
-                userService.chargePoint(userId,10000L);
+                userService.chargePoint(new PointChargeRequestDto(userId,10000L));
                 System.out.println("Future charge Thread: " + Thread.currentThread().getName());
             });
             System.out.println("charge Thread: " + Thread.currentThread().getName());
@@ -150,7 +160,7 @@ public class MultiThreadTest{
     void multiThreadChargeAndOrderFail() throws InterruptedException, ExecutionException {
         Long userId = userRepository.findAll().get(0).getId();
         Long menuId = menuRepository.findAll().get(0).getId();
-        List<OrderDto> orderList = List.of(new OrderDto(menuId,40)); // total:20,000원
+        List<OrderMenuIdNumberDto> orderList = List.of(new OrderMenuIdNumberDto(menuId,40)); // total:20,000원
 
         CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
             orderService.orderMenu(userId,orderList);
@@ -164,7 +174,7 @@ public class MultiThreadTest{
         }
 
         CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
-            userService.chargePoint(userId,10000L);
+            userService.chargePoint(new PointChargeRequestDto(userId,10000L));
             System.out.println("Future charge Thread: " + Thread.currentThread().getName());
         });
         future2.get();
