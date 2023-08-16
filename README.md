@@ -25,7 +25,7 @@
 </br>
 
 ## 🧬API
-[노션 API 명세서](https://transparent-overcoat-20e.notion.site/21f006da338c4ef59c27d45cc34e7171?v=83832c529a204a76b2e2994ebc2dc3f5)
+[노션 API 명세서](https://www.notion.so/suyoung225/21f006da338c4ef59c27d45cc34e7171?v=83832c529a204a76b2e2994ebc2dc3f5&pvs=4)
 
 <br>
 
