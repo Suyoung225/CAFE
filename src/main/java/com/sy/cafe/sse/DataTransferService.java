@@ -39,7 +39,7 @@ public class DataTransferService {
             LocalDateTime datetime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
             orderRepository.findByCreatedTimeAfter(datetime).forEach(
                     (order) -> {
-                        sendToClient(emitter, eventId, new OrderDataToTransfer(order), eventId);
+                        sendToClient(emitter, eventId, OrderDataToTransfer.from(order), eventId);
                     }
             );
         }

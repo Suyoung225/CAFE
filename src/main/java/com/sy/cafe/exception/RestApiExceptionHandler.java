@@ -41,5 +41,4 @@ public class RestApiExceptionHandler {
         return map;
     }
 
-
 }

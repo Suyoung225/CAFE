@@ -2,9 +2,7 @@ package com.sy.cafe.order.controller;
 
 import com.sy.cafe.order.controller.dto.OrderRequestDto;
 import com.sy.cafe.order.controller.dto.OrderResponseDto;
-import com.sy.cafe.global.ResponseDto;
 import com.sy.cafe.order.service.OrderService;
-import com.sy.cafe.order.service.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService{
     public UserDto registerUser(String nickname) {
         User user = new User(nickname);
         userRepository.save(user);
-        return new UserDto(user);
+        return UserDto.from(user);
     }
 
     @Override

@@ -1,9 +1,8 @@
 package com.sy.cafe.user.controller;
 
 import com.sy.cafe.user.controller.dto.PointChargeRequestDto;
-import com.sy.cafe.user.controller.dto.UserPointDto;
-import com.sy.cafe.global.ResponseDto;
 import com.sy.cafe.user.controller.dto.UserDto;
+import com.sy.cafe.user.controller.dto.UserPointDto;
 import com.sy.cafe.user.controller.dto.UserRegisterDto;
 import com.sy.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;

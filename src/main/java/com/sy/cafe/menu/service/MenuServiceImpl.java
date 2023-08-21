@@ -27,7 +27,7 @@ public class MenuServiceImpl implements MenuService{
     @Override
     @Transactional(readOnly = true)
     public List<MenuDto> listAllMenu(){
-        return menuRepository.findAll().stream().map(MenuDto::new).collect(Collectors.toList());
+        return menuRepository.findAll().stream().map(MenuDto::from).collect(Collectors.toList());
     }
 
     // 메뉴 추가
@@ -39,7 +39,7 @@ public class MenuServiceImpl implements MenuService{
             throw new DuplicatedMenuException("메뉴가 존재합니다.");
         Menu menu = new Menu(name, price);
         menuRepository.save(menu);
-        return new MenuDto(menu);
+        return MenuDto.from(menu);
     }
 
     // 메뉴 수정
@@ -54,7 +54,7 @@ public class MenuServiceImpl implements MenuService{
             throw new DuplicatedMenuException("메뉴가 존재합니다.");
 
         menu.update(name, price);
-        return new MenuDto(menu);
+        return MenuDto.from(menu);
     }
 
     // 주문한 메뉴 가격까지 포함해서 리턴

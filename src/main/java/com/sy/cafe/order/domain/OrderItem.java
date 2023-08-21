@@ -30,12 +30,15 @@ public class OrderItem extends CreatedTimeEntity {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    public OrderItem(OrderItemDto dto, Order order) {
-        this.price = dto.getPrice();
-        this.number = dto.getNumber();
-        this.menuId = dto.getMenuId();
+    public OrderItem(Long price, Integer number, Long menuId, Order order) {
+        this.price = price;
+        this.number = number;
+        this.menuId = menuId;
         this.order = order;
     }
 
+    public static OrderItem of(OrderItemDto dto, Order order){
+        return new OrderItem(dto.getPrice(), dto.getNumber(), dto.getMenuId(), order);
+    }
 
 }

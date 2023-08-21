@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService{
         orderRepository.save(order);
 
         // 데이터 수집 플랫폼에 전송
-        eventPublisher.publishEvent(new OrderEvent(new OrderDataToTransfer(order)));
+        eventPublisher.publishEvent(new OrderEvent(OrderDataToTransfer.from(order)));
 
         return new OrderResponseDto(userId, currentBalance, orderList, totalAmount);
     }
@@ -60,5 +60,6 @@ public class OrderServiceImpl implements OrderService{
         public OrderEvent(OrderDataToTransfer orderData) {
             this.orderData = orderData;
         }
+
     }
 }

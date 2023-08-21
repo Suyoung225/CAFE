@@ -16,10 +16,11 @@ public class OrderDataToTransfer {
     List<OrderMenuIdNumberDto> orderItems;
     Long totalAmount;
 
-    public OrderDataToTransfer(Order order){
-        userId = order.getUserId();
-        orderItems = order.getOrderItems().stream().map(OrderMenuIdNumberDto::new).collect(Collectors.toList());
-        totalAmount = order.getAmount();
+    public static OrderDataToTransfer from(Order order){
+        Long userId = order.getUserId();
+        List<OrderMenuIdNumberDto> orderItems = order.getOrderItems().stream().map(OrderMenuIdNumberDto::new).collect(Collectors.toList());
+        Long totalAmount = order.getAmount();
+        return new OrderDataToTransfer(userId, orderItems, totalAmount);
     }
 
 }

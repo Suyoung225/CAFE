@@ -38,7 +38,7 @@ class UserControllerTest {
     @Test
     @DisplayName("회원 추가")
     void register() throws Exception {
-        UserDto dto = new UserDto(User.builder().id(1L).nickname("회원1").point(0L).build());
+        UserDto dto = UserDto.from(User.builder().id(1L).nickname("회원1").point(0L).build());
         when(userService.registerUser("회원1")).thenReturn(dto);
 
         mvc.perform(post("/user/register")

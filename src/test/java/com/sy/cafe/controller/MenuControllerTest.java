@@ -39,7 +39,7 @@ class MenuControllerTest {
     void allMenu() throws Exception {
         Menu menu1 = Menu.builder().id(1L).price(2000L).name("메뉴1").build();
         Menu menu2 = Menu.builder().id(2L).price(2000L).name("메뉴2").build();
-        List<MenuDto> list = List.of(new MenuDto(menu1), new MenuDto(menu2));
+        List<MenuDto> list = List.of(MenuDto.from(menu1), MenuDto.from(menu2));
         when(menuService.listAllMenu()).thenReturn(list);
 
         mvc.perform(get("/menu")
@@ -53,7 +53,7 @@ class MenuControllerTest {
     @Test
     @DisplayName("메뉴 추가")
     void addMenu() throws Exception {
-        MenuDto dto = new MenuDto(Menu.builder().id(1L).price(2000L).name("메뉴1").build());
+        MenuDto dto = MenuDto.from(Menu.builder().id(1L).price(2000L).name("메뉴1").build());
         MenuAddRequestDto requestDto = new MenuAddRequestDto("메뉴1",2000L);
         when(menuService.addMenu("메뉴1",2000L)).thenReturn(dto);
 
@@ -82,7 +82,7 @@ class MenuControllerTest {
     @Test
     @DisplayName("메뉴 변경")
     void updateMenu() throws Exception{
-        MenuDto dto = new MenuDto(Menu.builder().id(1L).price(2000L).name("메뉴11").build());
+        MenuDto dto = MenuDto.from(Menu.builder().id(1L).price(2000L).name("메뉴11").build());
         MenuAddRequestDto requestDto = new MenuAddRequestDto("메뉴11",2000L);
         when(menuService.updateMenu(1L,"메뉴11",2000L)).thenReturn(dto);
 

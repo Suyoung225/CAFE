@@ -41,7 +41,7 @@ public class Order extends CreatedTimeEntity {
         order.userId = userId;
         order.orderItems = new ArrayList<>();
         for (OrderItemDto orderItemDto : orderItemDtos) {
-            order.orderItems.add(new OrderItem(orderItemDto, order));
+            order.orderItems.add(OrderItem.of(orderItemDto, order));
         }
         return order;
     }
