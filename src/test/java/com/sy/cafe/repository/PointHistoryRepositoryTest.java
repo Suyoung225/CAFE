@@ -1,9 +1,9 @@
 package com.sy.cafe.repository;
 
 import com.sy.cafe.config.TestConfig;
-import com.sy.cafe.pointhistory.domain.PointHistory;
-import com.sy.cafe.pointhistory.domain.PointType;
-import com.sy.cafe.pointhistory.repository.PointRepository;
+import com.sy.cafe.user.domain.PointHistory;
+import com.sy.cafe.user.domain.PointType;
+import com.sy.cafe.user.repository.PointRepository;
 import com.sy.cafe.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,11 +34,13 @@ class PointHistoryRepositoryTest {
                 .build();
 
         // when
-        pointRepository.save(pointHistory);
+        PointHistory pointHistory2 = pointRepository.save(pointHistory);
 
         // then
-        assertThat(pointHistory.getPoint()).isEqualTo(5000L);
-        assertThat(pointHistory.getType()).isEqualTo(PointType.CHARGE);
-        assertThat(pointHistory.getUser().getNickname()).isEqualTo("sy");
+        assertThat(pointHistory2.getPoint()).isEqualTo(5000L);
+        assertThat(pointHistory2.getType()).isEqualTo(PointType.CHARGE);
+        assertThat(pointHistory2.getUser().getNickname()).isEqualTo("sy");
     }
+
+
 }

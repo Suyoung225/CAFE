@@ -2,7 +2,6 @@ package com.sy.cafe.user.service;
 
 import com.sy.cafe.aop.DistributeLock;
 import com.sy.cafe.exception.UserNotFoundException;
-import com.sy.cafe.pointhistory.service.PointHistoryService;
 import com.sy.cafe.user.controller.dto.PointChargeRequestDto;
 import com.sy.cafe.user.domain.User;
 import com.sy.cafe.user.controller.dto.UserPointDto;

@@ -3,6 +3,7 @@ package com.sy.cafe.user.service;
 import com.sy.cafe.user.controller.dto.UserPointDto;
 import com.sy.cafe.user.controller.dto.PointChargeRequestDto;
 import com.sy.cafe.user.controller.dto.UserDto;
+import com.sy.cafe.user.domain.User;
 
 public interface UserService {
     UserDto registerUser(String nickname);

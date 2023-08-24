@@ -1,7 +1,6 @@
-package com.sy.cafe.pointhistory.domain;
+package com.sy.cafe.user.domain;
 
 import com.sy.cafe.global.CreatedTimeEntity;
-import com.sy.cafe.user.domain.User;
 import lombok.*;
 
 import javax.persistence.*;

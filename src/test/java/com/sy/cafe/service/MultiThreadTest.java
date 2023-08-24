@@ -1,9 +1,7 @@
 package com.sy.cafe.service;
 
-import com.sy.cafe.EmbeddedRedisTestConfig;
-import com.sy.cafe.RedisTestConfig;
 import com.sy.cafe.menu.domain.Menu;
-import com.sy.cafe.pointhistory.repository.PointRepository;
+import com.sy.cafe.user.repository.PointRepository;
 import com.sy.cafe.user.controller.dto.PointChargeRequestDto;
 import com.sy.cafe.user.domain.User;
 import com.sy.cafe.order.controller.dto.OrderMenuIdNumberDto;
@@ -18,7 +16,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 

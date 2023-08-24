@@ -1,4 +1,4 @@
-package com.sy.cafe.pointhistory.domain;
+package com.sy.cafe.user.domain;
 
 public enum PointType {
     CHARGE,

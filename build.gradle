@@ -46,8 +46,6 @@ dependencies {
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
 
-
-
     // querydsl
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"

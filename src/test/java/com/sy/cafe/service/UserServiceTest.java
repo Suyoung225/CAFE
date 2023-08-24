@@ -2,7 +2,7 @@ package com.sy.cafe.service;
 
 import com.sy.cafe.exception.BalanceInsufficientException;
 import com.sy.cafe.exception.UserNotFoundException;
-import com.sy.cafe.pointhistory.service.PointHistoryServiceImpl;
+import com.sy.cafe.user.service.PointHistoryServiceImpl;
 import com.sy.cafe.user.controller.dto.PointChargeRequestDto;
 import com.sy.cafe.user.domain.User;
 import com.sy.cafe.user.repository.UserRepository;
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 import java.util.Optional;
 
