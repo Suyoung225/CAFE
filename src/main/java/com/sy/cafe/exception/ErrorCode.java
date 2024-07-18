@@ -15,6 +15,7 @@ public enum ErrorCode {
     BALANCE_INSUFFICIENT(HttpStatus.BAD_REQUEST, "포인트가 부족합니다."),
 
     DUPLICATED_REQUEST(HttpStatus.BAD_REQUEST, "중복된 요청입니다."),
+    LOCK_INTERRUPTED(HttpStatus.BAD_REQUEST, "락 획득 중 인터럽트 발생"),
     ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 데이터입니다.");
 
 

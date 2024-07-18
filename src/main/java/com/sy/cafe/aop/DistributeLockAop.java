@@ -34,18 +34,21 @@ public class DistributeLockAop {
         String key = REDISSON_KEY_PREFIX + createKey(signature.getParameterNames(), joinPoint.getArgs(), distributeLock.key());
 
         RLock rLock = redissonClient.getLock(key);
-
+        boolean isLocked = false;
         try {
-            boolean available = rLock.tryLock(distributeLock.waitTime(), distributeLock.leaseTime(), distributeLock.timeUnit());
-            if (!available) {
-                return false;
+            isLocked = rLock.tryLock(distributeLock.waitTime(), distributeLock.leaseTime(), distributeLock.timeUnit());
+            if (!isLocked) {
+                log.error("Could not acquire lock for key: {{}}", key);
             }
             log.info("get distribution lock success {}" , key);
             return aopForTransaction.proceed(joinPoint);
         } catch (InterruptedException e) {
-            throw new RequestException(ErrorCode.DUPLICATED_REQUEST);
+            throw new RequestException(ErrorCode.LOCK_INTERRUPTED);
         } finally {
-            rLock.unlock();
+            if (isLocked) {
+                rLock.unlock();
+                log.info("Released distributed lock for key: {}", key);
+            }
         }
     }
     private String createKey(String[] parameterNames, Object[] args, String key) {

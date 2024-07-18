@@ -64,16 +64,13 @@ public class EmbeddedRedisConfig {
             String command = String.format("netstat -nao | find \"LISTEN\" | find \"%d\"", port);
             String[] shell = {"cmd.exe", "/y", "/c", command};
             return Runtime.getRuntime().exec(shell);
-        }else if(os.contains("linux")) {
+        }else if(os.contains("linux") || os.contains("mac")) {
             String command = String.format("netstat -nat | grep LISTEN|grep %d", port);
             String[] shell = {"/bin/sh", "-c", command};
             return Runtime.getRuntime().exec(shell);
-        }else if(os.contains("mac")){
-
-        }else{
+        } else{
             throw new RuntimeException("해결되지 않은 OS 입니다. executeGrepProcessCommand() os 명령어 코드를 추가해주세요.");
         }
-        return null;
     }
 
     // 해당 Process가 현재 실행 중인지 확인
