@@ -24,7 +24,7 @@ spring:
       hibernate:
         format_sql: 'true'
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
 
   cache:
     type: redis
@@ -33,11 +33,13 @@ spring:
     host: localhost
     port: 6379
 
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9093
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#  kafka:
+#    producer:
+#      bootstrap-servers: localhost:9093
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+kafka:
+  bootstrap-servers: localhost:9093
 ---
 spring:
   config:
